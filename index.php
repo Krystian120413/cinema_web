@@ -21,14 +21,32 @@
                     <hr/>
                     <a class="nav-link" href="repertuar.php">Repertuar</a>
                     <hr/>
-                    <a class="nav-link" href="#">Nowości</a>
-                    <hr/>
+                    <a class="nav-link" href="#">Zaloguj się</a>
                 </div>
             </div>
         </nav>
     </header>
 <div class="container-fluid">
     <div class="row">
+        <h1 class="col-md-12 seans">SEANS TYGODNIA!</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-9 cont">
+            <img src="img/mortal_kombat.jpeg" class="image" alt="mortal_kombat">
+        </div>
+        <div class="col-md-3 cont">
+            <h2><a href="repertuar.php">Zarezerwuj bilet już dziś!</a></h2>
+        </div>
+    </div>
+    <div class="row">
+        <footer class="col-md-12">
+            <a href="#">
+                Kontakt
+            </a>
+        </footer>
+    </div>
+    <div class="row">
+        <!--
         <?php
             error_reporting(E_ALL);
             ini_set('display_errors', 'On');
@@ -76,6 +94,7 @@
             }
             echo "</table>\n";
         ?>
+        -->
     </div>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

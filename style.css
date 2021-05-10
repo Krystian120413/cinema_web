@@ -1,5 +1,5 @@
 body {
-    color: rgb(23, 95, 5);
+    color: #fff;
     font-size: 2em;
     /*background-image: url("img/cinema1.jpg")!important;*/
     background-color: #000;
@@ -18,4 +18,30 @@ body {
 header a {
     padding-right: 100px!important;
     padding-left: 50px!important;
+}
+
+.cont {
+    color: #fff;
+}
+
+.seans {
+    font-size: 2.5em;
+    text-align: center;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    background-color: #129378;
+    font-size: 1.1rem;
+    text-align: right;
+    padding-right: 50px!important;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
 }
