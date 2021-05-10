@@ -1,0 +1,21 @@
+body {
+    color: rgb(23, 95, 5);
+    font-size: 2em;
+    /*background-image: url("img/cinema1.jpg")!important;*/
+    background-color: #000;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.baner {
+    font-size: 3em!important;
+}
+
+.title {
+    color: #129378;
+}
+
+header a {
+    padding-right: 100px!important;
+    padding-left: 50px!important;
+}
