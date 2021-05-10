@@ -5,6 +5,7 @@ body {
     background-color: #000;
     background-repeat: no-repeat;
     background-size: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .baner {
@@ -44,4 +45,32 @@ footer {
 a {
     text-decoration: none;
     color: #fff;
+}
+
+.loginPanel {
+    border: 2px solid white;
+}
+
+.login:hover {
+    cursor: pointer;
+} 
+
+.loginInput {
+    border-radius: 20px;
+    background-color: rgb(51, 51, 51);
+    color: #fff;
+    border: 2px solid #fff;
+    padding-left: 10px;
+}
+
+    .loginInput:focus {
+        outline: none;
+    }
+
+.loginButton {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid rgb(51, 51, 51);
+    border-radius: 20px;
+    font-weight: bold;
 }

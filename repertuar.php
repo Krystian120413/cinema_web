@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
             <a class="navbar-brand" href="index.php">
-                <div class="d-inline-block align-bottom baner">KINO <span class="title">ONIK</span></div>
+                <div class="d-inline-block align-bottom baner">KINO <span class="title">KONIK</span></div>
             </a>
             <buttton class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hambmenu" aria-controls="hambmenu" aria-expanded="false" aria-label="Navigation button">
                 <span class="navbar-toggler-icon"></span>
@@ -21,7 +21,7 @@
                     <hr/>
                     <a class="nav-link" href="repertuar.php">Repertuar</a>
                     <hr/>
-                    <a class="nav-link" href="#">Kontakt</a>
+                    <a class="nav-link login" href="#">Zaloguj się</a>
                     <hr/>
                 </div>
             </div>
