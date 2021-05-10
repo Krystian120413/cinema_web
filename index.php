@@ -41,7 +41,7 @@
     <div class="row">
         <footer class="col-md-12">
             <a href="#">
-                Kontakt
+                Kontakty
             </a>
         </footer>
     </div>
