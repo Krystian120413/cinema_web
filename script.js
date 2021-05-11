@@ -5,6 +5,8 @@ let emailInput = document.createElement("input");
 let passwordInput = document.createElement("input");
 let submitButton = document.createElement("button");
 let closeButton = document.createElement("button");
+let registerLink = document.createElement("a");
+let registerButton = document.createElement("button");
 
 login.onclick = () => {    
     loginPanel.appendChild(form);
@@ -17,25 +19,34 @@ login.onclick = () => {
     emailInput.maxLength = 70;
     emailInput.placeholder = 'email';
     emailInput.required = true;
-    emailInput.className = 'loginInput col-md-3';
+    emailInput.className = 'loginInput offset-md-1 col-md-2';
 
     passwordInput.type = 'password';
     passwordInput.maxLength = 32;
     passwordInput.placeholder = 'hasło';
     passwordInput.required = true;
-    passwordInput.className = 'loginInput col-md-3';
+    passwordInput.className = 'loginInput col-md-2';
 
     submitButton.innerHTML = "Zaloguj się";
     submitButton.type = "submit";
-    submitButton.className = "loginButton col-md-3";
+    submitButton.className = "loginButton col-md-2";
+    
+    registerLink.href = "registerPanel.php";
+    registerLink.appendChild(registerButton);
+
+    registerButton.innerHTML = "Zarejestruj się";
+    registerButton.type = "button";
+    registerButton.className = "loginButton col-md-2";
+
 
     closeButton.innerHTML = "zamknij";
     closeButton.type = "button";
-    closeButton.className = "loginButton col-md-3";
+    closeButton.className = "loginButton offset-md-1 col-md-2";
 
     form.appendChild(emailInput);
     form.appendChild(passwordInput);
     form.appendChild(submitButton);
+    form.appendChild(registerLink);
     form.appendChild(closeButton);
     
 };

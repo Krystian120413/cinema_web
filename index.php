@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONIK</title>
+    <title>KONIK</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -19,7 +19,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="hambmenu">
                 <div class="navbar-nav">
                     <hr/>
-                    <a class="nav-link" href="repertuar.php">Repertuar</a>
+                    <a class="nav-link login" href="repertuar.php">Repertuar</a>
                     <hr/>
                     <a class="nav-link login" id="login">Zaloguj się</a>                
                 </div>
@@ -28,9 +28,9 @@
     </header>
 <div class="container-fluid">
     <div class="row">
-    <div id="loginPanel" class="col-md-12">
-        <!--Form added in javascript-->
-    </div>
+        <div id="loginPanel" class="col-md-12">
+            <!--Form added in javascript-->
+        </div>
     </div>
     <div class="row">
         <h1 class="col-md-12 seans">SEANS TYGODNIA!</h1>

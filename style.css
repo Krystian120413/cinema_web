@@ -49,10 +49,16 @@ a {
 
 .loginPanel {
     border: 2px solid white;
+    border-radius: 20px;
+    font-size: 0.85em;
+    background-color: #129378;
+    height: 70px;
+    padding-top: 10px;
 }
 
 .login:hover {
     cursor: pointer;
+    background-color: #129378;
 } 
 
 .loginInput {
@@ -60,7 +66,7 @@ a {
     background-color: rgb(51, 51, 51);
     color: #fff;
     border: 2px solid #fff;
-    padding-left: 10px;
+    padding-left: 20px;
 }
 
     .loginInput:focus {
@@ -73,4 +79,8 @@ a {
     border: 2px solid rgb(51, 51, 51);
     border-radius: 20px;
     font-weight: bold;
+}
+
+.registerInput {
+    width: 300px!important;
 }
