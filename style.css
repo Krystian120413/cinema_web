@@ -85,6 +85,14 @@ a {
     width: 300px!important;
 }
 
+.hhh {
+    text-align: center!important;
+}
+
+.panel {
+    text-align: center!important;
+}
+
 @media (max-width: 991px) {
     .loginButton {
         font-size: 0.6em;

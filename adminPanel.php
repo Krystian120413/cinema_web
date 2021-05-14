@@ -14,7 +14,7 @@
 <body>
     <header>
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand">
                 <div class="d-inline-block align-bottom baner">KINO <span class="title">KONIK</span></div>
             </a>
             <buttton class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hambmenu" aria-controls="hambmenu" aria-expanded="false" aria-label="Navigation button">
@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="hambmenu">
                 <div class="navbar-nav">
                     <hr/>
-                    <a class="nav-link login" href="repertuar.php">Repertuar</a>
+                    <a class="nav-link login" href="repertuarAdmin.php">Repertuar</a>
                     <hr/>
                     <?php
                         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
@@ -51,22 +51,21 @@
         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
     ?>
         <div class="row">
-            <h1 class="offset-md-4 col-md-3">WITAJ NASZ ADMINIE</h1>
+            <h1 class="col-md-12 hhh">WITAJ NASZ ADMINIE</h1>
         </div>
         <div class="row">
-            <h1 class="col-md-12">OTO PANEL ADMINA</h1>
+            <h3 class="col-md-12 panel">OTO PANEL ADMINA</h3>
         </div>
     <?php
         }
         else {
     ?>
     <div class="row">
-        <h1 class="col-md-12">NIE JESTEŚ ZALOGOWANY</h1>
+        <h1 class="col-md-12 hhh">NIE JESTEŚ ZALOGOWANY</h1>
     </div>
     <?php
         }
     ?>
 </div>
-    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </html>

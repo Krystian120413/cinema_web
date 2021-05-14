@@ -22,16 +22,18 @@
             <div class="collapse navbar-collapse justify-content-end" id="hambmenu">
                 <div class="navbar-nav">
                     <hr/>
-                    <a class="nav-link login" href="#">Repertuar</a>
-                    <hr/>
                     <?php
                         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
                     ?>
+                            <a class="nav-link login" href="userPanel.php">Powrót</a>
+                            <hr/>
                             <a class="nav-link login" href="logowanie.php?logout">Wyloguj się</a>
                     <?php
                         }
                         else {
                     ?>
+                            <a class="nav-link login" href="index.html">Powrót</a>
+                            <hr/>
                             <a class="nav-link login" id="login">Zaloguj się</a>
                     <?php
                         }

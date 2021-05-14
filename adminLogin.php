@@ -65,6 +65,7 @@
             </span>
          </div>
          <button class="btn btn-primary offset-md-4 col-md-2" type="submit">Zaloguj się</button>
+         <a href="index.html"><button class="btn col-md-1 btn-primary" type="button">Powrót</button></a>
     </form>
     <?php
         if(isset($_POST['email'])){
@@ -117,8 +118,7 @@
             }
             else {
                 session_destroy();
-                //header('Location: adminLogin.php');
-                echo $email;
+                header('Location: adminLogin.php');
             }
         }
     ?>

@@ -14,7 +14,7 @@
 <body>
     <header>
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand">
                 <div class="d-inline-block align-bottom baner">KINO <span class="title">KONIK</span></div>
             </a>
             <buttton class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hambmenu" aria-controls="hambmenu" aria-expanded="false" aria-label="Navigation button">
@@ -52,7 +52,7 @@
     ?>
         <div class="row">
             
-            <h1 class="offset-md-4 col-md-3">Witaj
+            <h1 class="col-md-12 hhh">Zalogowano jako: 
             <?php
                 error_reporting(E_ALL);
                 ini_set('display_errors', 'On');
@@ -105,7 +105,7 @@
         else {
     ?>
     <div class="row">
-        <h1 class="col-md-12">NIE JESTEŚ ZALOGOWANY</h1>
+        <h1 class="col-md-12 hhh">NIE JESTEŚ ZALOGOWANY</h1>
     </div>
     <?php
         }
