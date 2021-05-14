@@ -84,3 +84,9 @@ a {
 .registerInput {
     width: 300px!important;
 }
+
+@media (max-width: 991px) {
+    .loginButton {
+        font-size: 0.6em;
+    }
+}

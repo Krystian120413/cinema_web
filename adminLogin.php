@@ -34,9 +34,9 @@
         </div>
     </div>
     <div class="row">
-        <h1 class="offset-md-4 col-md-3">Rejestracja</h1>
+        <h1 class="offset-md-4 col-md-3">Logowanie do panelu Administratora</h1>
     </div>
-    <form method="post" action="register.php">
+    <form method="post">
         <div class="form-group row">
             <label for="email" class="offset-md-2 col-md-2">Email:</label>
             <span class="col-md-3">
@@ -64,51 +64,64 @@
                 </div>
             </span>
          </div>
-
-         <div class="form-group row">
-            <label for="passwordTwo" class="offset-md-2 col-md-2">Powtórz hasło:</label>
-            <span class="col-md-3">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">
-                            <i class="material-icons">person</i>
-                        </span>
-                    </div>
-                    <input type="password" name="passwordTwo" class="form-control registerInput" placeholder="powtórz hasło" maxlength=32 required>
-                </div>
-            </span>
-         </div>
-
-         <div class="form-group row">
-            <label for="name" class="offset-md-2 col-md-2">Imię:</label>
-            <span class="col-md-3">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">
-                            <i class="material-icons">person</i>
-                        </span>
-                    </div>
-                    <input type="text" name="name" class="form-control registerInput" placeholder="Imię" maxlength=70 required>
-                </div>
-            </span>
-         </div>
-
-         <div class="form-group row">
-            <label for="surname" class="offset-md-2 col-md-2">Nazwisko:</label>
-            <span class="col-md-3">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">
-                            <i class="material-icons">person</i>
-                        </span>
-                    </div>
-                    <input type="text" name="surname" class="form-control registerInput" placeholder="Nazwisko" maxlength=70 required>
-                </div>
-            </span>
-         </div>
-
-         <button class="btn btn-primary offset-md-4 col-md-2" type="submit">Zarejestruj się</button>
+         <button class="btn btn-primary offset-md-4 col-md-2" type="submit">Zaloguj się</button>
     </form>
+    <?php
+        if(isset($_POST['email'])){
+            session_start();
+
+            error_reporting(E_ALL);
+            ini_set('display_errors', 'On');
+                            
+            $username = "sys";                  // Use your username
+            $password = "admin";             // and your password
+            $database = "localhost/XE";   // and the connect string to connect to your database
+                            
+            $email = $_POST['email'];
+            $passwd = $_POST['password'];
+                
+            $query = "begin
+                :result := adminLogin('$email', '$passwd');
+                end;";
+                        
+            $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
+            if (!$c) {
+                $m = oci_error();
+                trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
+            }
+                        
+            $s = oci_parse($c, $query);
+            if (!$s) {
+                $m = oci_error($c);
+                trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
+            }
+
+            //$result = return z funkcji pl/sql
+            oci_bind_by_name($s, ':result', $result, 40);
+            oci_execute($s);
+            echo $result;
+
+            if($result=='zalogowano'){
+                // zapis
+                $ciastka = Array('email' => $email, 'haslo' => $passwd);
+                setcookie('ciastka', serialize($ciastka), time()+3600);
+
+                // odczyt zabezpieczony przed nieistniejącym ciasteczkiem
+                if (isset($_COOKIE['ciastka'])) $tablica = unserialize($_COOKIE['ciastka']); 
+                else $ciastka = Array();
+
+                $_SESSION['Authenticated'] = 1;
+                session_write_close();
+                
+                header('Location: adminPanel.php');
+            }
+            else {
+                session_destroy();
+                //header('Location: adminLogin.php');
+                echo $email;
+            }
+        }
+    ?>
     <div class="row">
         <footer class="col-md-12 navbar fixed-bottom justify-content-end">
             <a href="contact.php">

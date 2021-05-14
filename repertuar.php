@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+    session_start();
+?>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +13,7 @@
 <body>
 <header>
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="index.html">
                 <div class="d-inline-block align-bottom baner">KINO <span class="title">KONIK</span></div>
             </a>
             <buttton class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hambmenu" aria-controls="hambmenu" aria-expanded="false" aria-label="Navigation button">
@@ -21,7 +24,18 @@
                     <hr/>
                     <a class="nav-link login" href="#">Repertuar</a>
                     <hr/>
-                    <a class="nav-link login" id="login">Zaloguj się</a>                
+                    <?php
+                        if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
+                    ?>
+                            <a class="nav-link login" href="logowanie.php?logout">Wyloguj się</a>
+                    <?php
+                        }
+                        else {
+                    ?>
+                            <a class="nav-link login" id="login">Zaloguj się</a>
+                    <?php
+                        }
+                    ?>
                 </div>
             </div>
         </nav>
@@ -41,9 +55,11 @@
             $password = "admin";             // and your password
             $database = "localhost/XE";   // and the connect string to connect to your database
             
-            $query = "select * from filmy";
+            $query = "begin
+            pokaz_seanse;
+            end;";
             
-            $c = oci_connect($username, $password, $database, null, OCI_SYSDBA);
+            $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
             if (!$c) {
                 $m = oci_error();
                 trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
@@ -60,20 +76,24 @@
                 trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
             }
             
-            echo "<table border='1'>\n";
+            echo "<table style='border:1px solid white'>\n";
+            /*
             $ncols = oci_num_fields($s);
             echo "<tr>\n";
             for ($i = 1; $i <= $ncols; ++$i) {
                 $colname = oci_field_name($s, $i);
-                echo "  <th><b>".htmlspecialchars($colname,ENT_QUOTES|ENT_SUBSTITUTE)."</b></th>\n";
-            }
+                echo "  <th>".$colname."</th>\n";
+            } 
             echo "</tr>\n";
+            */
+
+            echo "<tr><th>NUMER<br>SALI</th><th>TYTUŁ</th><th>DATA</th><th>GODZINA<br>ROPOCZĘCIA</th><th>SEANS 3D</th><th>CENA BILETU<br> DLA DOROSŁYCH</th><th>CENA BILETU<br> ULGOWA</th><th>CENA BILETU<br> DLA SZKÓŁ</th></tr>";
             
-            while (($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) != false) {
+            while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
                 echo "<tr>\n";
                 foreach ($row as $item) {
                     echo "<td>";
-                    echo $item!==null?htmlspecialchars($item, ENT_QUOTES|ENT_SUBSTITUTE):"&nbsp;";
+                    echo $item!==null? $item :"&nbsp;";
                     echo "</td>\n";
                 }
                 echo "</tr>\n";
