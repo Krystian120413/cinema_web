@@ -13,7 +13,7 @@
 <body>
 <header>
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand">
                 <div class="d-inline-block align-bottom baner">KINO <span class="title">KONIK</span></div>
             </a>
             <buttton class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hambmenu" aria-controls="hambmenu" aria-expanded="false" aria-label="Navigation button">
@@ -24,11 +24,23 @@
                     <hr/>
                     <?php
                         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
+                            $ciastka = $_COOKIE['ciastka'];
+                            $ciastka = stripslashes($ciastka);
+                            $ciastka = unserialize($ciastka);
+                            if($ciastka['email'] != 'admin@admin.pl'){
                     ?>
-                            <a class="nav-link login" href="userPanel.php">Powrót</a>
+                                <a class="nav-link login" href="userPanel.php">Powrót</a>                            
+                    <?php
+                            }
+                            else {
+                    ?>      
+                                <a class="nav-link login" href="adminPanel.php">Powrót</a>
+                    <?php
+                            }
+                    ?>
                             <hr/>
                             <a class="nav-link login" href="logowanie.php?logout">Wyloguj się</a>
-                    <?php
+                    <?php            
                         }
                         else {
                     ?>
@@ -49,24 +61,24 @@
         </div>
     </div>
     <div class="row">
-        <?php
+        <?php            
             error_reporting(E_ALL);
             ini_set('display_errors', 'On');
-            
+                
             $username = "sys";                  // Use your username
             $password = "admin";             // and your password
             $database = "localhost/XE";   // and the connect string to connect to your database
-            
+                
             $query = "begin
             pokaz_seanse;
             end;";
-            
+                
             $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
             if (!$c) {
                 $m = oci_error();
                 trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
             }
-            
+                
             $s = oci_parse($c, $query);
             if (!$s) {
                 $m = oci_error($c);
@@ -77,30 +89,86 @@
                 $m = oci_error($s);
                 trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
             }
-            
-            echo "<table style='border:1px solid white'>\n";
-            /*
-            $ncols = oci_num_fields($s);
-            echo "<tr>\n";
-            for ($i = 1; $i <= $ncols; ++$i) {
-                $colname = oci_field_name($s, $i);
-                echo "  <th>".$colname."</th>\n";
-            } 
-            echo "</tr>\n";
-            */
 
-            echo "<tr><th>NUMER<br>SALI</th><th>TYTUŁ</th><th>DATA</th><th>GODZINA<br>ROPOCZĘCIA</th><th>SEANS 3D</th><th>CENA BILETU<br> DLA DOROSŁYCH</th><th>CENA BILETU<br> ULGOWA</th><th>CENA BILETU<br> DLA SZKÓŁ</th></tr>";
-            
-            while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
-                echo "<tr>\n";
-                foreach ($row as $item) {
-                    echo "<td>";
-                    echo $item!==null? $item :"&nbsp;";
-                    echo "</td>\n";
-                }
-                echo "</tr>\n";
+            if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
+        ?>
+            <table style='border:1px solid white'>
+                <tr>
+                    <th>NUMER<br>SALI</th>
+                    <th>TYTUŁ</th>
+                    <th>REŻYSER</th>
+                    <th>DATA</th>
+                    <th>GODZINA<br>ROPOCZĘCIA</th>
+                    <th>SEANS 3D</th>
+                    <th>CENA BILETU<br> DLA DOROSŁYCH</th>
+                    <th>CENA BILETU<br> ULGOWA</th>
+                    <th>CENA BILETU<br> DLA SZKÓŁ</th>
+                    <th>KUP</th>
+                </tr>
+                
+                <?php
+                    while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
+                ?>
+                        <tr style="border: 1px solid white">
+                            <?php
+                                foreach ($row as $item) {
+                            ?>
+                                <td> 
+                                    
+                                    <?php
+                                        echo $item!==null? $item :"&nbsp;";
+                                    ?>
+                                </td>
+                            <?php
+                                }
+                            ?>
+                            <td>
+                                <button class="btn btn-secondary">KUP</button>
+                            </td>
+                        </tr>
+                <?php
+                    }
+                ?>
+            </table id="ticketTable">
+        <?php
             }
-            echo "</table>\n";
+            else{
+        ?>
+                
+            <table style='border:1px solid white'>
+                <tr>
+                    <th>NUMER<br>SALI</th>
+                    <th>TYTUŁ</th>
+                    <th>REŻYSER</th>
+                    <th>DATA</th>
+                    <th>GODZINA<br>ROPOCZĘCIA</th>
+                    <th>SEANS 3D</th>
+                    <th>CENA BILETU<br> DLA DOROSŁYCH</th>
+                    <th>CENA BILETU<br> ULGOWA</th>
+                    <th>CENA BILETU<br> DLA SZKÓŁ</th>
+                </tr>
+                <?php
+                    while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
+                ?>
+                        <tr style="border: 1px solid white">
+                            <?php
+                                foreach ($row as $item) {
+                            ?>
+                                <td> 
+                                    <?php
+                                        echo $item!==null? $item :"&nbsp;";
+                                    ?>
+                                </td>
+                            <?php
+                                }
+                            ?>
+                        </tr>
+                <?php
+                    }
+                ?>
+            </table>
+        <?php
+            }
         ?>
     </div>
 </div>

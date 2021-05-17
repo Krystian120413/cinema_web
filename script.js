@@ -39,7 +39,7 @@ login.onclick = () => {
     submitLink.href = "logowanie.php";
     submitLink.appendChild(submitButton);
     
-    registerLink.href = "registerPanel.php";
+    registerLink.href = "registerPanel.html";
     registerLink.appendChild(registerButton);
 
     registerButton.innerHTML = "Zarejestruj się";

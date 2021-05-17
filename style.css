@@ -93,6 +93,40 @@ a {
     text-align: center!important;
 }
 
+.cardd {
+    border: 5px dashed #fff;
+    border-radius: 20px;
+    text-align: center;
+    padding-top: 50px;
+    width: auto;
+    height: 200px;
+    background-color: rgb(83, 83, 83);
+}
+
+    .cardd:hover {
+        background-color: rgb(34, 167, 138);
+        font-weight: bold;
+        color: #000;
+    }
+
+.ticketTable {
+    font-size: 0.8em;
+}
+
+tr {
+    border: 2px solid white;
+    text-align: center;
+    align-items: center;
+}
+
+    tr:hover {
+        background-color: red;
+    }
+
+    th {
+        border: 2px solid #fff;
+    }
+
 @media (max-width: 991px) {
     .loginButton {
         font-size: 0.6em;

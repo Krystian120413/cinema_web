@@ -69,21 +69,21 @@
 
             $_SESSION['Authenticated'] = 1;
             session_write_close();
-
-            echo
-            '<form name="myForm" id="myForm" action="logowanie.php" method="post">
-                <input type="email" name="email" value='.$email.'>
-                <input type="password" name="haslo" value='.$password.'>
-            </form>';
         }
     }
 ?>
+            
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
 </head>
 <body>
+    <form name="myForm" id="myForm" action="logowanie.php" method="post" style="display:none;">
+        <input type="email" name="email" value=`$email`>
+        <input type="password" name="haslo" value=`$password`>
+    </form>
     <script>
         window.onload = () => {
             document.forms["myForm"].submit();

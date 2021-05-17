@@ -28,7 +28,7 @@
                     <?php
                         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
                     ?>
-                        <a class="nav-link login" href="logowanie.php?logout">Wyloguj się</a>
+                        <a class="nav-link login" href="userPanel.php">Powrót</a>
                     <?php
                         }
                         else {
@@ -42,32 +42,49 @@
         </nav>
     </header>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-           
-        </div>
-    </div>
     <?php
         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
     ?>
         <div class="row">
-            <h1 class="col-md-12 hhh">WITAJ NASZ ADMINIE</h1>
+            <h1 class="col-md-12 hhh" style="margin:80px 0 140px 0;">Czy na pewno chcesz usunąć swoje konto?</h1>
         </div>
         <div class="row">
-            <h3 class="col-md-12 panel" style="margin:80px 0 140px 0;">OTO PANEL ADMINA</h3>
+            <h2 class="hhh">(Jeśli tak wpisz dwukrotnie swoje hasło)</h2>
         </div>
-        <div class="row">
-            <a href="addFilm.html" class="offset-md-1 col-md-2">
-                <div class="cardd">Dodaj film</div>
-            </a>
-            <a href="addSeanceForm.php" class="offset-md-2 col-md-2">
-                <div class="cardd">Dodaj seans</div>
-            </a>
-            <a href="seeUsers.php" class="offset-md-2 col-md-2">
-                <div class="cardd">Zobacz użytkowników</div>
-            </a>
-        </div>
+        <form method="post" action="delete.php">
+            <div class="form-group row">
+                <label for="password" class="offset-md-2 col-md-2">Wpisz hasło:</label>
+                <span class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="material-icons">person</i>
+                            </span>
+                        </div>
+                        <input type="password" name="password" class="form-control registerInput" maxlength=70 required>
+                    </div>
+                </span>
+            </div>
+
+            <div class="form-group row">
+            <label for="secondPassword" class="offset-md-2 col-md-2">Powtórz hasło:</label>
+            <span class="col-md-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="material-icons">person</i>
+                        </span>
+                    </div>
+                    <input type="password" name="secondPassword" class="form-control registerInput" maxlength=70 required>
+                </div>
+            </span>
+            </div>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-danger offset-md-4 col-md-2">USUŃ KONTO</button>
+            </div>
+        </form>
     <?php
+            session_write_close();
         }
         else {
     ?>
@@ -75,8 +92,18 @@
         <h1 class="col-md-12 hhh">NIE JESTEŚ ZALOGOWANY</h1>
     </div>
     <?php
+            session_destroy();
         }
     ?>
+    <div class="row">
+        <footer class="col-md-12 navbar fixed-bottom justify-content-end">
+            <a href="contact.php">
+                Kontakt
+            </a>
+        </footer>
+    </div>
 </div>
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </html>
+

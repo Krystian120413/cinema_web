@@ -28,7 +28,7 @@
                     <?php
                         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
                     ?>
-                        <a class="nav-link login" href="logowanie.php?logout">Wyloguj się</a>
+                        <a class="nav-link login" href="userPanel.php">Powrót</a>
                     <?php
                         }
                         else {
@@ -51,8 +51,9 @@
         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
     ?>
         <div class="row">
-            
-            <h1 class="col-md-12 hhh">Zalogowano jako: 
+            <h1 class="col-md-12 hhh" style="margin:80px 0 140px 0;">TWOJE BILETY</h1>
+        </div>
+        <div class="row">
             <?php
                 error_reporting(E_ALL);
                 ini_set('display_errors', 'On');
@@ -66,10 +67,10 @@
                 $ciastka = unserialize($ciastka);
 
                 $email = $ciastka['email'];
-                $passwd = $ciastka['haslo'];
 
+                
                 $query = "begin
-                pokaz_uzytkownika('$email', '$passwd');
+                pokaz_bilety('$email');
                 end;";
                 
                 $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
@@ -89,46 +90,46 @@
                     trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
                 }
 
-                while($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)){
-                    foreach ($row as $item) {
-                        echo $item  !== null ? $item." " :"&nbsp;";
-                    }
-                }
             ?>
-            </h1>
-        </div>
-        <div class="row">
-            <h3 class="col-md-12 panel" style="margin:80px 0 140px 0;">OTO PANEL UŻYTKOWNIKA</h3>
-        </div>
-        <div class="row">
-            <a href="userTickets.php" class="offset-md-1 col-md-2">
-                <div class="cardd">Sprawdź swoje bilety</div>
-            </a>
-            <a href="changeData.php" class="offset-md-2 col-md-2">
-                <div class="cardd">Zmień dane</div>
-            </a>
-            <a href="deleteAccount.php" class="offset-md-2 col-md-2">
-                <div class="cardd">Usuń konto</div>
-            </a>
+            <table class="ticketTable">
+                <th>NR<br>BILETU</th>
+                <th>MIEJSCE</th>
+                <th>SALA</th>
+                <th>DZIEŃ</th>
+                <th>GODZINA</th>
+                <th>3D</th>
+                <th>TYTUŁ</th>
+                <th>REŻYSER</th>
+                <th>czas trwania</th>
+                <tr>
+                <?php
+                    while($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)){
+                        echo "<tr>";
+                            foreach ($row as $item) {
+                ?>
+                                <td>
+                                    <?php
+                                        echo $item  !== null ? $item." " :"&nbsp;";
+                                    ?>
+                                </td>
+                <?php
+                            }
+                        echo "</tr>";
+                    }
+                ?>
+                </tr>   
+            </table>     
         </div>
     <?php
-            session_write_close();
         }
         else {
     ?>
-            <div class="row">
-                <h1 class="col-md-12 hhh">NIE JESTEŚ ZALOGOWANY</h1>
-            </div>
-            <?php
+    <div class="row">
+        <h1 class="col-md-12 hhh">NIE JESTEŚ ZALOGOWANY</h1>
+    </div>
+    <?php
         }
     ?>
-    <div class="row">
-        <footer class="col-md-12 navbar fixed-bottom justify-content-end">
-            <a href="contact.php">
-                Kontakt
-            </a>
-        </footer>
-    </div>
 </div>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
