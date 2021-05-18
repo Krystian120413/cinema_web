@@ -92,7 +92,7 @@
 
             if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
         ?>
-            <table style='border:1px solid white'>
+            <table style='border:1px solid white' id="tickteTable">
                 <tr>
                     <th>NUMER<br>SALI</th>
                     <th>TYTUŁ</th>
@@ -129,7 +129,45 @@
                 <?php
                     }
                 ?>
-            </table id="ticketTable">
+            </table>
+            <div>
+                <?php
+                    $qr = "begin
+                    pokaz_miejsca('Kiler', '21/07/30', '14:30', 1);
+                    end;";
+                    $s = oci_parse($c, $qr);
+                    if (!$s) {
+                        $m = oci_error($c);
+                        trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
+                    }
+                    $r = oci_execute($s);
+                    if (!$r) {
+                        $m = oci_error($s);
+                        trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
+                    }
+                ?>
+                    <table style='border:1px solid white' id="tickteTable">
+                        <?php
+                            while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
+                        ?>
+                                <tr style="border: 1px solid white">
+                                    <?php
+                                        foreach ($row as $item) {
+                                    ?>
+                                        <td> 
+                                            
+                                            <?php
+                                                echo $item!==null? $item :"&nbsp;";
+                                            ?>
+                                        </td>
+                                    <?php
+                                        }
+                                    ?>
+                                </tr>
+                        <?php
+                            }
+                        ?>
+            </div>
         <?php
             }
             else{

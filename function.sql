@@ -311,6 +311,50 @@ END nowe_zamowienie;
 
 ----------
 
+create or replace NONEDITIONABLE PROCEDURE pokaz_miejsca(
+    t in filmy.tytul%type,
+    d in seanse.dzien%type,
+    g in seanse.godzina_rozpoczecia%type,
+    i in seanse.id_sali%type
+)
+as
+c4 sys_refcursor;
+BEGIN
+    DECLARE
+        a integer := 0;
+        b integer;
+        begin
+            begin
+                SELECT seanse.id_seansu INTO a FROM seanse 
+                inner join filmy
+                on seanse.id_filmu = filmy.id_filmu
+                where filmy.tytul=t and seanse.dzien=d and seanse.godzina_rozpoczecia=g and seanse.id_sali=i;
+                    EXCEPTION
+                        WHEN NO_DATA_FOUND THEN
+                        a := 0;
+            end;
+            begin
+                for j in 1..a loop
+                    select bilety.miejsce into b from bilety
+                    inner join zamowienia
+                    on bilety.id_biletu = zamowienia.id_biletu
+                    inner join seanse
+                    on zamowienia.id_seansu = seanse.id_seansu
+                    where seanse.id_seansu = a;
+                    if b = j then
+                        continue;
+                        open c4 for to_char(b);
+                    else
+                        open c4 for 'error';
+                    end if;
+                end loop;
+                dbms_sql.return_result(c4);
+                close c4;
+            end;
+        end;
+END pokaz_miejsca;
+
+
 --TESTOWE WYWOLANIA W PL/SQL--------------------------------
 
 begin
