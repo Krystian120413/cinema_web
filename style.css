@@ -30,6 +30,11 @@ header a {
     text-align: center;
 }
 
+.btn_index {
+    padding-top: 400px;
+    font-size: 3em;
+}
+
 .image {
     width: 100%;
     height: 100%;

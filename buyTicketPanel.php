@@ -47,90 +47,94 @@
         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
     ?>
             <form action="buyTicket.php" method="post">
-                <label for="seat">Wybierz miejsce</label>
-                <select name="seat">
-                    <?php  
-                        error_reporting(E_ALL);
-                        ini_set('display_errors', 'On');
-                            
-                        $username = "sys";                  // Use your username
-                        $password = "admin";             // and your password
-                        $database = "localhost/XE";   // and the connect string to connect to your database
+                <div class="form-group row">
+                    <label for="seat"  class="offset-md-4 col-md-2" style="margin-top:60px; font-size:1.2em;">Wybierz miejsce:</label>
+                    <select name="seat"  class="col-md-1" style="margin-top:60px; font-size:1.2em;">
+                        <?php  
+                            error_reporting(E_ALL);
+                            ini_set('display_errors', 'On');
+                                
+                            $username = "sys";                  // Use your username
+                            $password = "admin";             // and your password
+                            $database = "localhost/XE";   // and the connect string to connect to your database
 
-                        $hall = $_POST['hall'];
-                        $title = $_POST['title'];
-                        $date = $_POST['date'];
-                        $hour = $_POST['hour'];
+                            $hall = $_POST['hall'];
+                            $title = $_POST['title'];
+                            $date = $_POST['date'];
+                            $hour = $_POST['hour'];
 
-                        $_SESSION['hall'] = $hall;
-                        $_SESSION['title'] = $title;
-                        $_SESSION['date'] = $date;
-                        $_SESSION['hour'] = $hour;
-                            
-                        $query = "begin
-                        :liczba_miejsc := pokaz_liczbe_miejsc($hall);
-                        end;";
-                            
-                        $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
-                        if (!$c) {
-                            $m = oci_error();
-                            trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
-                        }
-                        $s = oci_parse($c, $query);
-                        if (!$s) {
-                            $m = oci_error($c);
-                            trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
-                        }
-                        oci_bind_by_name($s, ':liczba_miejsc', $liczba_miejsc, 40);
-                        oci_execute($s);
-
-                        $qr = "begin
-                        pokaz_miejsca('$title', '$date', '$hour', $hall);
-                        end;";
-                        $s = oci_parse($c, $qr);
-                        if (!$s) {
-                            $m = oci_error($c);
-                            trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
-                        }
-                        $r = oci_execute($s, OCI_DEFAULT);
-                        if (!$r) {
-                            $m = oci_error($s);
-                            trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
-                        }
-                        
-                        $arr = array();
-                        $i = 0;
-                        $w = 0;
-                        while($row = oci_fetch_array($s, OCI_BOTH)){
-                            $arr[] = $row[0];
-                            $i++;
-                        }
-                        if($i === 0){
-                            for($j = 1; $j <= $liczba_miejsc; $j++) echo "<option value='".$j."'>".$j."</option>";
-                        }
-                        else if($i == $liczba_miejsc){
-                            echo '<option>brak dostępnych biletów</option>';
-                        }
-                        else {
-                            for($t = 1; $t <= $liczba_miejsc; $t++){
-                                for($e = 0; $e < count($arr); $e++){
-                                    if($t == $arr[$e]){                                
-                                        $w = 1;
-                                    }    
-                                }
-                                if($w == 0) echo "<option value='".$t."'>".$t."</option>";
-                                $w = 0;
+                            $_SESSION['hall'] = $hall;
+                            $_SESSION['title'] = $title;
+                            $_SESSION['date'] = $date;
+                            $_SESSION['hour'] = $hour;
+                                
+                            $query = "begin
+                            :liczba_miejsc := pokaz_liczbe_miejsc($hall);
+                            end;";
+                                
+                            $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
+                            if (!$c) {
+                                $m = oci_error();
+                                trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
                             }
-                        }
-                                   
-                        
-                    ?>
-                </select>
-                <button type="submit" class="btn btn-secondary">KUP</button>
+                            $s = oci_parse($c, $query);
+                            if (!$s) {
+                                $m = oci_error($c);
+                                trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
+                            }
+                            oci_bind_by_name($s, ':liczba_miejsc', $liczba_miejsc, 40);
+                            oci_execute($s);
+
+                            $qr = "begin
+                            pokaz_miejsca('$title', '$date', '$hour', $hall);
+                            end;";
+                            $s = oci_parse($c, $qr);
+                            if (!$s) {
+                                $m = oci_error($c);
+                                trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
+                            }
+                            $r = oci_execute($s, OCI_DEFAULT);
+                            if (!$r) {
+                                $m = oci_error($s);
+                                trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
+                            }
+                            
+                            $arr = array();
+                            $i = 0;
+                            $w = 0;
+                            while($row = oci_fetch_array($s, OCI_BOTH)){
+                                $arr[] = $row[0];
+                                $i++;
+                            }
+                            if($i === 0){
+                                for($j = 1; $j <= $liczba_miejsc; $j++) echo "<option value='".$j."'>".$j."</option>";
+                            }
+                            else if($i == $liczba_miejsc){
+                                echo '<option>brak dostępnych biletów</option>';
+                            }
+                            else {
+                                for($t = 1; $t <= $liczba_miejsc; $t++){
+                                    for($e = 0; $e < count($arr); $e++){
+                                        if($t == $arr[$e]){                                
+                                            $w = 1;
+                                        }    
+                                    }
+                                    if($w == 0) echo "<option value='".$t."'>".$t."</option>";
+                                    $w = 0;
+                                }
+                            }
+                                    
+                            
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group row">
+                    <button type="submit" class="btn btn-secondary offset-md-5 col-md-2" style="margin-top:60px;">KUP</button>
+                </div>
             </form> 
 </div>
     <?php
-            echo "<h1>Kupowanie biletu na ".$title.", sala: ".$hall.", data: ".$date." ".$hour."</h1>";
+            echo "<h4 class='offset-md-3 col-md-5' style='margin-top:60px;'>Kupowanie biletu na ".$title.", sala: ".$hall.", data: ".$date." ".$hour."</h4>";
             session_write_close();
         }
         else {
