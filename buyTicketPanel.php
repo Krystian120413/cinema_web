@@ -61,7 +61,11 @@
                         $title = $_POST['title'];
                         $date = $_POST['date'];
                         $hour = $_POST['hour'];
-                       
+
+                        $_SESSION['hall'] = $hall;
+                        $_SESSION['title'] = $title;
+                        $_SESSION['date'] = $date;
+                        $_SESSION['hour'] = $hour;
                             
                         $query = "begin
                         :liczba_miejsc := pokaz_liczbe_miejsc($hall);
@@ -102,15 +106,17 @@
                             $i++;
                         }
                         if($i === 0){
-                            for($j = 0; $j <= $liczba_miejsc; $j++) echo "<option value='".$j."'>".$j."</option>";
+                            for($j = 1; $j <= $liczba_miejsc; $j++) echo "<option value='".$j."'>".$j."</option>";
+                        }
+                        else if($i == $liczba_miejsc){
+                            echo '<option>brak dostępnych biletów</option>';
                         }
                         else {
                             for($t = 1; $t <= $liczba_miejsc; $t++){
                                 for($e = 0; $e < count($arr); $e++){
                                     if($t == $arr[$e]){                                
                                         $w = 1;
-                                    }
-                                    
+                                    }    
                                 }
                                 if($w == 0) echo "<option value='".$t."'>".$t."</option>";
                                 $w = 0;

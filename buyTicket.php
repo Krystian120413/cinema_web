@@ -16,34 +16,44 @@
             
 
         $email = $ciastka['email'];
-        $title = $_POST['title'];
-        $hall = $_POST['hall'];
-        $day = $_POST['date'];
-        $hour = $_POST['hour'];
+        $title = $_SESSION['title'];
+        $hall = $_SESSION['hall'];
+        $day = $_SESSION['date'];
+        $hour = $_SESSION['hour'];
+        $seat = $_POST['seat'];
 
+        $query = "begin
+        :result := kup_bilet('$email', '$title', '$day', '$hour', $hall, $seat);
+        end;";
                         
-            $query = "begin
-            :result := kup_bilet('$email', '$title','$hall', '$day', '$hour');
-            end;";
-                        
-            $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
-            if (!$c) {
-                $m = oci_error();
-                trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
-                }
-                        
-            $s = oci_parse($c, $query);
-            if (!$s) {
-                $m = oci_error($c);
-                trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
+        $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
+        if (!$c) {
+            $m = oci_error();
+            trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
             }
+                        
+        $s = oci_parse($c, $query);
+        if (!$s) {
+            $m = oci_error($c);
+            trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
+        }
             
-            oci_bind_by_name($s, ':result', $result, 40);
-            oci_execute($s);
+        oci_bind_by_name($s, ':result', $result, 40);
+        oci_execute($s);
 
-            if($result == 'bought'){
-                header("refresh:1; repertuar.php");
-                echo "<script>alert('Pomyślnie wykonano operację. Sprawdź teraz zakładkę swoje bilety')</script>";
-            }
+        if($result == 'bought'){
+            header("refresh:1; repertuar.php");
+            echo "<script>alert('Pomyślnie wykonano operację. Sprawdź teraz zakładkę swoje bilety')</script>";
+        }
+        else {
+            header("refresh:1; repertuar.php");
+            echo "<script>alert('Wystąpił błąd. Spróbuj ponownie')</script>";
+        }
+
+        $_SESSION['hall'] = " ";
+        $_SESSION['title'] = " ";
+        $_SESSION['date'] = " ";
+        $_SESSION['hour'] = " ";
+        session_write_close();
     }
 ?>

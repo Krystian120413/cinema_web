@@ -287,6 +287,66 @@ begin
     return res;
 end;
 
+-------------------
+
+CREATE OR REPLACE NONEDITIONABLE FUNCTION kup_bilet(
+    em in klienci.email%type,
+    ty in filmy.tytul%type,
+    dz in varchar2,
+    go in seanse.godzina_rozpoczecia%type,
+    ids in seanse.id_sali%type,
+    se in bilety.miejsce%type
+)
+return varchar2
+is 
+komunikat varchar2(20);
+BEGIN
+    DECLARE
+        idSeans integer := 0;
+        idFilm integer := 0;
+        idBil integer := 0;
+    BEGIN
+    komunikat := 'error1';
+        begin       
+            select filmy.id_filmu into idFilm from filmy where filmy.tytul=ty;
+            exception
+                when OTHERS then
+                    idFilm := 0;
+                    komunikat := 'error2';
+        end;
+        if idFilm > 0 then
+            begin
+                BEGIN
+                    SELECT seanse.id_seansu INTO idSeans FROM seanse
+                    where seanse.id_filmu=idFilm and seanse.dzien=to_date(dz, 'dd-mm-yyyy') and seanse.godzina_rozpoczecia=go and seanse.id_sali=ids;
+                    EXCEPTION
+                        WHEN NO_DATA_FOUND THEN
+                        idSeans := 0;
+                        komunikat := 'error3';
+                END;
+                if idSeans > 0 then
+                    begin
+                        begin
+                            select MAX(id_biletu) into idBil from bilety;
+                            idBil := idBil+1;
+                            exception
+                                when OTHERS then
+                                    idBil := 1;
+                        end;
+                        begin
+                            insert into bilety values (idBil, se);
+                            insert into zamowienia values(em, idSeans, idBil);
+                            komunikat := 'bought';
+                        end;
+                    end;
+                end if;
+            end;
+        end if;
+    end;
+    commit;
+    return komunikat;
+END;
+
 --PROCEDURY------------------------------------
 
 create or replace NONEDITIONABLE PROCEDURE pokaz_seanse
@@ -344,9 +404,7 @@ BEGIN
         on zamowienia.id_seansu=seanse.id_seansu
         inner join filmy
         on seanse.id_filmu=filmy.id_filmu
-        inner join klienci
-        on zamowienia.email_klienta=klienci.email
-        where klienci.email=x;
+        where zamowienia.email_klienta=x;
         dbms_sql.return_result(c3);
 END pokaz_bilety;
 
@@ -443,6 +501,16 @@ begin
   DECLARE a varchar2(40);
   begin
     a := zmien_nazwisko('Kowalski');
+    dbms_output.put_line(a);
+  end;
+end;
+
+
+-----------------
+begin
+  DECLARE a varchar2(40);
+  begin
+    a := kup_bilet('arek@marek.pl', 'Kiler', '03-06-2021', '13:30', 1, 10);
     dbms_output.put_line(a);
   end;
 end;
