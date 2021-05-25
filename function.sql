@@ -129,7 +129,9 @@ BEGIN
     return komunikat;
 END;
 
-----------
+
+-----------------------------
+
 
 create or replace NONEDITIONABLE function usun_konto(a in klienci.email%type)
 return varchar2
@@ -223,6 +225,68 @@ begin
     return res;
 end;
 
+-------------------
+
+create or replace NONEDITIONABLE function pokaz_liczbe_miejsc(a in sale.nr_sali%type)
+return number
+is
+  res number;
+begin
+    begin
+        select liczba_miejsc into res from sale where nr_sali=a;
+        exception
+            when OTHERS then
+            res := 'error';
+    end;
+    return res;
+end;
+
+create or replace NONEDITIONABLE function kup_bilet(
+    email in zamowienia.email%type,
+    ty in filmy.tytul%type,
+    dz in varchar2,
+    go in seanse.godzina_rozpoczecia%type,
+    ids in seanse.id_sali%type
+)
+return varchar2
+is
+    res varchar2(10);
+begin
+    DECLARE
+        idSeans integer := 0;
+        idFilm integer := 0;
+    BEGIN
+        begin
+            select filmy.id_filmu into idFilm from filmy where filmy.tytul=ty;
+            exception
+                when OTHERS then
+                    idFilm := 0;
+        end;
+        if idFilm > 0 then
+            begin
+                BEGIN
+                    SELECT seanse.id_seansu INTO idSeans FROM seanse
+                    where seanse.id_filmu=idFilm and seanse.dzien=to_date(dz, 'dd-mm-yyyy') and seanse.godzina_rozpoczecia=go and seanse.id_sali=ids;
+                    EXCEPTION
+                        WHEN NO_DATA_FOUND THEN
+                        idSeans := 0;
+                END;
+                if idSeans > 0 then
+                    begin
+                        open c4 for
+                            select bilety.miejsce from bilety
+                            inner join zamowienia
+                            on bilety.id_biletu=zamowienia.id_biletu
+                            where zamowienia.id_seansu=idSeans;
+                        dbms_sql.return_result(c4); 
+                    end;
+                end if;
+            end;
+        end if;
+    END;   
+    return res;
+end;
+
 --PROCEDURY------------------------------------
 
 create or replace NONEDITIONABLE PROCEDURE pokaz_seanse
@@ -230,7 +294,7 @@ AS
 c1 SYS_REFCURSOR;
 BEGIN
   open c1 for
-    SELECT SEANSE.id_sali, FILMY.TYTUL, filmy.rezyser, SEANSE.dzien, seanse.godzina_rozpoczecia, SEANSE.czy_seans_jest_w_3d, seanse.cena_biletu_dorosly, seanse.cena_biletu_ulgowy, SEANSE.cena_dla_szkoly 
+    SELECT SEANSE.id_sali, FILMY.TYTUL, filmy.rezyser, to_char(SEANSE.dzien, 'DD-MM-YYYY'), seanse.godzina_rozpoczecia, SEANSE.czy_seans_jest_w_3d, seanse.cena_biletu_dorosly, seanse.cena_biletu_ulgowy, SEANSE.cena_dla_szkoly 
     FROM SEANSE
     inner join FILMY
     on SEANSE.id_filmu=FILMY.Id_filmu;
@@ -312,48 +376,47 @@ END nowe_zamowienie;
 ----------
 
 create or replace NONEDITIONABLE PROCEDURE pokaz_miejsca(
-    t in filmy.tytul%type,
-    d in seanse.dzien%type,
-    g in seanse.godzina_rozpoczecia%type,
-    i in seanse.id_sali%type
+    ty in filmy.tytul%type,
+    dz in varchar2,
+    go in seanse.godzina_rozpoczecia%type,
+    ids in seanse.id_sali%type
 )
 as
 c4 sys_refcursor;
 BEGIN
     DECLARE
-        a integer := 0;
-        b integer;
+        idSeans integer := 0;
+        idFilm integer := 0;
+    BEGIN
         begin
+            select filmy.id_filmu into idFilm from filmy where filmy.tytul=ty;
+            exception
+                when OTHERS then
+                    idFilm := 0;
+        end;
+        if idFilm > 0 then
             begin
-                SELECT seanse.id_seansu INTO a FROM seanse 
-                inner join filmy
-                on seanse.id_filmu = filmy.id_filmu
-                where filmy.tytul=t and seanse.dzien=d and seanse.godzina_rozpoczecia=g and seanse.id_sali=i;
+                BEGIN
+                    SELECT seanse.id_seansu INTO idSeans FROM seanse
+                    where seanse.id_filmu=idFilm and seanse.dzien=to_date(dz, 'dd-mm-yyyy') and seanse.godzina_rozpoczecia=go and seanse.id_sali=ids;
                     EXCEPTION
                         WHEN NO_DATA_FOUND THEN
-                        a := 0;
+                        idSeans := 0;
+                END;
+                if idSeans > 0 then
+                    begin
+                        open c4 for
+                            select bilety.miejsce from bilety
+                            inner join zamowienia
+                            on bilety.id_biletu=zamowienia.id_biletu
+                            where zamowienia.id_seansu=idSeans;
+                        dbms_sql.return_result(c4); 
+                    end;
+                end if;
             end;
-            begin
-                for j in 1..a loop
-                    select bilety.miejsce into b from bilety
-                    inner join zamowienia
-                    on bilety.id_biletu = zamowienia.id_biletu
-                    inner join seanse
-                    on zamowienia.id_seansu = seanse.id_seansu
-                    where seanse.id_seansu = a;
-                    if b = j then
-                        continue;
-                        open c4 for to_char(b);
-                    else
-                        open c4 for 'error';
-                    end if;
-                end loop;
-                dbms_sql.return_result(c4);
-                close c4;
-            end;
-        end;
+        end if;
+    END;   
 END pokaz_miejsca;
-
 
 --TESTOWE WYWOLANIA W PL/SQL--------------------------------
 

@@ -90,9 +90,9 @@
                 trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
             }
 
-            if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
+            if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1) && $ciastka['email'] != 'admin@admin.pl'){
         ?>
-            <table style='border:1px solid white' id="tickteTable">
+            <table style='border:1px solid white' id="ticketTable">
                 <tr>
                     <th>NUMER<br>SALI</th>
                     <th>TYTUŁ</th>
@@ -107,68 +107,39 @@
                 </tr>
                 
                 <?php
-                    while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
+                    if(oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS) != NULL){
+                        $i = 1;
+                        while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
                 ?>
-                        <tr style="border: 1px solid white">
-                            <?php
-                                foreach ($row as $item) {
-                            ?>
-                                <td> 
-                                    
+                            <tr style="border: 1px solid white">
+                                <?php
+                                    foreach ($row as $item) {
+                                ?>
+                                    <td> 
+                                        
+                                        <?php
+                                            echo $item!==null? $item :"&nbsp;";
+                                        ?>
+                                    </td>
+                                <?php
+                                    }
+                                ?>
+                                <td>
                                     <?php
-                                        echo $item!==null? $item :"&nbsp;";
+                                        echo "<button class='btn btn-secondary' type='button' onclick='buy(".$i.")'>KUP</button>";
                                     ?>
                                 </td>
-                            <?php
-                                }
-                            ?>
-                            <td>
-                                <button class="btn btn-secondary">KUP</button>
-                            </td>
-                        </tr>
+                            </tr>
                 <?php
+                            $i++;
+                        }
                     }
                 ?>
             </table>
-            <div>
-                <?php
-                    $qr = "begin
-                    pokaz_miejsca('Kiler', '21/07/30', '14:30', 1);
-                    end;";
-                    $s = oci_parse($c, $qr);
-                    if (!$s) {
-                        $m = oci_error($c);
-                        trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
-                    }
-                    $r = oci_execute($s);
-                    if (!$r) {
-                        $m = oci_error($s);
-                        trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
-                    }
-                ?>
-                    <table style='border:1px solid white' id="tickteTable">
-                        <?php
-                            while ($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)) {
-                        ?>
-                                <tr style="border: 1px solid white">
-                                    <?php
-                                        foreach ($row as $item) {
-                                    ?>
-                                        <td> 
-                                            
-                                            <?php
-                                                echo $item!==null? $item :"&nbsp;";
-                                            ?>
-                                        </td>
-                                    <?php
-                                        }
-                                    ?>
-                                </tr>
-                        <?php
-                            }
-                        ?>
-            </div>
+            <form action="buyTicketPanel.php" method="post" id="ticketForm"></form>
+            <script src="ticketScript.js"></script> 
         <?php
+                session_write_close();
             }
             else{
         ?>
@@ -205,12 +176,14 @@
                     }
                 ?>
             </table>
+            <script src="script.js"></script>
         <?php
             }
         ?>
     </div>
 </div>
-    <script src="script.js"></script>
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </html>
 

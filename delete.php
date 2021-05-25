@@ -52,7 +52,4 @@ session_start();
                 echo "<script>alert('Błąd bazy danych. Wprowadź hasło poprawnie.')</script>";
         }
     }
-    else {
-
-    }
 ?>   

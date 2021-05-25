@@ -127,6 +127,10 @@ tr {
         border: 2px solid #fff;
     }
 
+#ticketForm {
+    display: none;
+}
+
 @media (max-width: 991px) {
     .loginButton {
         font-size: 0.6em;

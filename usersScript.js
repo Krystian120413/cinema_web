@@ -14,7 +14,6 @@ let rowValue = (x) => {
         input.name = 'row';
 
         sub.type = 'submit';
-        sub.innerHTML = 'tak';
         
         form.appendChild(input);
         form.appendChild(sub);
