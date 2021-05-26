@@ -51,7 +51,10 @@
         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
     ?>
         <div class="row">
-            <h1 class="col-md-12 hhh" style="margin:80px 0 140px 0;">TWOJE BILETY</h1>
+            <h1 class="col-md-12 hhh" style="margin:60px 0 60px 0;">TWOJE BILETY</h1>
+        </div>
+        <div class="row">
+            <h1>AKTYWNE BILETY</h1>
         </div>
         <div class="row">
             <?php
@@ -70,7 +73,7 @@
 
                 
                 $query = "begin
-                pokaz_bilety('$email');
+                pokaz_aktywne_bilety('$email');
                 end;";
                 
                 $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
@@ -80,6 +83,55 @@
                 }
                 
                 $s = oci_parse($c, $query);
+
+                $r = oci_execute($s);
+
+            ?>
+            <table class="ticketTable">
+                <th>NR<br>BILETU</th>
+                <th>MIEJSCE</th>
+                <th>SALA</th>
+                <th>DZIEŃ</th>
+                <th>GODZINA</th>
+                <th>3D</th>
+                <th>TYTUŁ</th>
+                <th>REŻYSER</th>
+                <th>czas trwania</th>
+                <tr>
+                <?php
+                    while($row = oci_fetch_array($s, OCI_ASSOC+OCI_RETURN_NULLS)){
+                        echo "<tr>";
+                            foreach ($row as $item) {
+                ?>
+                                <td>
+                                    <?php
+                                        echo $item  !== null ? $item." " :"&nbsp;";
+                                    ?>
+                                </td>
+                <?php
+                            }
+                        echo "</tr>";
+                    }
+                ?>
+                </tr>   
+            </table>     
+        </div>
+        <div class="row">
+            <h1>NIEAKTYWNE BILETY</h1>
+        </div>
+        <div class="row">
+            <?php
+                $qry = "begin
+                pokaz_nieaktywne_bilety('$email');
+                end;";
+                
+                $c = oci_connect($username, $password, $database, `AL32UTF8`, OCI_SYSDBA);
+                if (!$c) {
+                    $m = oci_error();
+                    trigger_error('Could not connect to database: '. $m['message'], E_USER_ERROR);
+                }
+                
+                $s = oci_parse($c, $qry);
 
                 $r = oci_execute($s);
 

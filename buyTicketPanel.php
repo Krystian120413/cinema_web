@@ -129,12 +129,12 @@
                     </select>
                 </div>
                 <div class="form-group row">
-                    <button type="submit" class="btn btn-secondary offset-md-5 col-md-2" style="margin-top:60px;">KUP</button>
+                    <button type="submit" class="btn btn-secondary offset-md-5 col-md-2" style="margin-top:60px;">Zarezerwuj</button>
                 </div>
             </form> 
 </div>
     <?php
-            echo "<h4 class='offset-md-3 col-md-5' style='margin-top:60px;'>Kupowanie biletu na ".$title.", sala: ".$hall.", data: ".$date." ".$hour."</h4>";
+            echo "<h4 class='offset-md-3 col-md-5' style='margin-top:60px;'>Rezerwowanie biletu na ".$title.", sala: ".$hall.", data: ".$date." ".$hour."</h4>";
             session_write_close();
         }
         else {

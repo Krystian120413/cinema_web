@@ -103,7 +103,7 @@
                     <th>CENA BILETU<br> DLA DOROSŁYCH</th>
                     <th>CENA BILETU<br> ULGOWA</th>
                     <th>CENA BILETU<br> DLA SZKÓŁ</th>
-                    <th>KUP</th>
+                    <th>ZAREZERWUJ</th>
                 </tr>
                 
                 <?php
@@ -126,7 +126,7 @@
                                 ?>
                                 <td>
                                     <?php
-                                        echo "<button class='btn btn-secondary' type='button' onclick='buy(".$i.")'>KUP</button>";
+                                        echo "<button class='btn btn-secondary' type='button' onclick='buy(".$i.")'>ZAREZERWUJ</button>";
                                     ?>
                                 </td>
                             </tr>

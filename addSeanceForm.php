@@ -98,7 +98,7 @@
                             <i class="material-icons">room</i>
                         </span>
                     </div>
-                    <input type="number" name="hall" class="form-control registerInput" placeholder="sala" maxlength=2 required>
+                    <input type="number" name="hall" class="form-control registerInput" placeholder="1-8" maxlength=2 required min="1" max="8">
                 </div>
             </span>
          </div>

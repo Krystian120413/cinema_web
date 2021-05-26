@@ -49,8 +49,14 @@
         </div>
     </div>
     <div class="row">
-        <?php  
-            if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1) && ($ciastka['email'] != 'admin@admin.pl')){          
+        <?php      
+            if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1) && ($ciastka['email'] != 'admin@admin.pl')){        
+
+        ?>
+            <h1>Nie jesteś zalogowany</h1>
+        <?php
+            }
+            else {
                 error_reporting(E_ALL);
                 ini_set('display_errors', 'On');
                     
@@ -76,13 +82,6 @@
                     $m = oci_error($s);
                     trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
                 }
-
-            
-        ?>
-            <h1>Nie jesteś zalogowany</h1>
-        <?php
-            }
-            else {     
         ?>
             <table id="usersTable">
                 <tr>

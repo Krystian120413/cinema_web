@@ -358,6 +358,7 @@ BEGIN
     FROM SEANSE
     inner join FILMY
     on SEANSE.id_filmu=FILMY.Id_filmu;
+    --where SEANSE.dzien > SYSDATE;
     DBMS_sql.return_result(c1);
 END pokaz_seanse;
 
@@ -390,13 +391,13 @@ END rejestracja;
 
 ----------
 
-create or replace NONEDITIONABLE PROCEDURE pokaz_bilety(
+create or replace NONEDITIONABLE PROCEDURE pokaz_aktywne_bilety(
     x in klienci.email%type)
 as
 c3 sys_refcursor;
 BEGIN
     open c3 for
-        select bilety.id_biletu, bilety.miejsce, seanse.id_sali, seanse.dzien, seanse.godzina_rozpoczecia, seanse.czy_seans_jest_w_3d, filmy.tytul, filmy.rezyser, filmy.czas_trwania
+        select bilety.id_biletu, bilety.miejsce, seanse.id_sali, to_char(SEANSE.dzien, 'DD-MM-YYYY'), seanse.godzina_rozpoczecia, seanse.czy_seans_jest_w_3d, filmy.tytul, filmy.rezyser, filmy.czas_trwania
         from bilety
         inner join zamowienia
         on bilety.id_biletu=zamowienia.id_biletu
@@ -404,9 +405,29 @@ BEGIN
         on zamowienia.id_seansu=seanse.id_seansu
         inner join filmy
         on seanse.id_filmu=filmy.id_filmu
-        where zamowienia.email_klienta=x;
+        where zamowienia.email_klienta=x and SEANSE.dzien >= SYSDATE;
         dbms_sql.return_result(c3);
-END pokaz_bilety;
+END pokaz_aktywne_bilety;
+
+----------
+
+create or replace NONEDITIONABLE PROCEDURE pokaz_nieaktywne_bilety(
+    x in klienci.email%type)
+as
+c3 sys_refcursor;
+BEGIN
+    open c3 for
+        select bilety.id_biletu, bilety.miejsce, seanse.id_sali, to_char(SEANSE.dzien, 'DD-MM-YYYY'), seanse.godzina_rozpoczecia, seanse.czy_seans_jest_w_3d, filmy.tytul, filmy.rezyser, filmy.czas_trwania
+        from bilety
+        inner join zamowienia
+        on bilety.id_biletu=zamowienia.id_biletu
+        inner join seanse
+        on zamowienia.id_seansu=seanse.id_seansu
+        inner join filmy
+        on seanse.id_filmu=filmy.id_filmu
+        where zamowienia.email_klienta=x and SEANSE.dzien < SYSDATE;
+        dbms_sql.return_result(c3);
+END pokaz_nieaktywne_bilety;
 
 ----------
 
