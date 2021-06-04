@@ -2,9 +2,7 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
             
-    $username1 = "sys";                  // Use your username
-    $password1 = "admin";             // and your password
-    $database1 = "localhost/XE";   // and the connect string to connect to your database
+    include 'databaseConnect.php';
     
     $nr = $_POST['hall'];
     $title = $_POST['title'];

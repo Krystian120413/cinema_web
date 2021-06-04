@@ -21,7 +21,7 @@ end;
 
 ----------
 
-reate or replace NONEDITIONABLE function checkBeforeRegister(a in klienci.email%type)
+create or replace NONEDITIONABLE function checkBeforeRegister(a in klienci.email%type)
 return varchar2
 as
   dopasowania number;
@@ -241,6 +241,8 @@ begin
     return res;
 end;
 
+--------------------
+
 create or replace NONEDITIONABLE function kup_bilet(
     email in zamowienia.email%type,
     ty in filmy.tytul%type,
@@ -358,7 +360,7 @@ BEGIN
     FROM SEANSE
     inner join FILMY
     on SEANSE.id_filmu=FILMY.Id_filmu;
-    --where SEANSE.dzien > SYSDATE;
+    where SEANSE.dzien > SYSDATE;
     DBMS_sql.return_result(c1);
 END pokaz_seanse;
 

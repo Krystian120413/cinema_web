@@ -51,19 +51,17 @@
         if(isset($_SESSION['Authenticated']) && ($_SESSION['Authenticated'] == 1)){
     ?>
         <div class="row">
-            <h1 class="col-md-12 hhh" style="margin:60px 0 60px 0;">TWOJE BILETY</h1>
+            <h1 class="col-md-12 hhh" style="margin:60px 0 60px 0;">TWOJE ZAREZERWOWANE BILETY</h1>
         </div>
         <div class="row">
-            <h1>AKTYWNE BILETY</h1>
+            <h1>AKTYWNE REZERWACJE</h1>
         </div>
         <div class="row">
             <?php
                 error_reporting(E_ALL);
                 ini_set('display_errors', 'On');
                 
-                $username = "sys";                  // Use your username
-                $password = "admin";             // and your password
-                $database = "localhost/XE";   // and the connect string to connect to your database
+                include 'databaseConnect.php';
                 
                 $ciastka = $_COOKIE['ciastka'];
                 $ciastka = stripslashes($ciastka);
@@ -117,7 +115,7 @@
             </table>     
         </div>
         <div class="row">
-            <h1>NIEAKTYWNE BILETY</h1>
+            <h1>NIEAKTYWNE REZERWACJE</h1>
         </div>
         <div class="row">
             <?php

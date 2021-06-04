@@ -54,11 +54,11 @@
         <div class="offset-md-3 col-md-3">
             <h2><u>Kino KONIK</u></h2>
             <p>
-                ul. Marszałkowska 28
+                ul. Jana Pawła II 8
                 <br/>
                 00-576 Warszawa
                 <br/>
-                kino@kinoluna.pl
+                kino@konik.pl
             </p>
         </div>
     </div>
@@ -66,9 +66,9 @@
         <div class="offset-md-3 col-md-3">
             <h2><u>Kasa / Rezerwacje</u></h2>
             <p>
-                tel.: 22 621 78 28
+                tel.: 22 765 45 28
                 <br/>
-                kasa@kinoluna.pl
+                kasakino@konik.pl
                 <br/>
                 <span>Kasa otwiera się 30 minut przed pierwszym seansem.</span>
             </p>
@@ -78,7 +78,7 @@
         <div class="offset-md-3 col-md-3">
             <h2><u>Biuro</u></h2>
             <p>
-                tel. / fax: 22 628 96 98
+                tel. / fax: 22 765 45 98
                 <br/>
                 (czynne od poniedziałku do piątku w godz. 9:30-17:00)
             </p>

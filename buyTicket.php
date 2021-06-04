@@ -9,11 +9,7 @@
         error_reporting(E_ALL);
         ini_set('display_errors', 'On');
                         
-        $username = "sys";                  // Use your username
-        $password = "admin";             // and your password
-        $database = "localhost/XE";   // and the connect string to connect to your database
-                        
-            
+        include 'databaseConnect.php';
 
         $email = $ciastka['email'];
         $title = $_SESSION['title'];
